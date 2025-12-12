@@ -8,9 +8,10 @@ export interface Product {
 
 export interface BlendSpec {
   name: string;
-  ingredients: string;
+  subtitle: string;
+  description: string;
   flavor: string;
-  effect: string;
+  benefit: string;
 }
 
 export interface Testimonial {

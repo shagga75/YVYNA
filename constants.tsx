@@ -22,34 +22,39 @@ export const PRODUCTS: Product[] = [
 
 export const BLEND_SPECS: BlendSpec[] = [
   {
-    name: "Relax Focus",
-    ingredients: "Yerba Mate, Lion's Mane, L-Teanina, Melissa",
-    flavor: "Cítrico suave con notas terrosas",
-    effect: "Concentración en calma sin ansiedad"
+    name: "Mental Focus",
+    subtitle: "Enfoque sin ansiedad",
+    description: "Blend nootrópico con Melena de León, romero y limón para claridad, memoria y productividad sostenida.",
+    flavor: "Herbal suave + cítricos",
+    benefit: "Concentración estable durante horas."
   },
   {
-    name: "Zen Energía",
-    ingredients: "Yerba Mate, Guayusa, Ginseng Panax",
-    flavor: "Intenso, herbal y robusto",
-    effect: "Energía sostenida y vitalidad física"
+    name: "Adaptoboost",
+    subtitle: "Energía sostenida + estrés bajo control",
+    description: "Yerba mate cocida con Rhodiola, ginseng y cúrcuma. Ideal para días intensos sin picos ni bajones.",
+    flavor: "Fresco, especiado",
+    benefit: "Regulación del cortisol + energía pareja."
   },
   {
-    name: "Glow Detox",
-    ingredients: "Yerba Mate, Diente de León, Cola de Caballo, Frutos Rojos",
-    flavor: "Frutal y refrescante",
-    effect: "Purificación y luminosidad de la piel"
+    name: "Inmune Zen",
+    subtitle: "Calma profunda + sistema inmune",
+    description: "Reishi, ashwagandha, lavanda y manzanilla para equilibrio mente-cuerpo y refuerzo inmunológico.",
+    flavor: "Floral cálido",
+    benefit: "Resiliencia emocional y física."
   },
   {
-    name: "Sleep Cleanse",
-    ingredients: "Manzanilla, Valeriana, Pasiflora, Lavanda (Sin Cafeína)",
-    flavor: "Floral y dulce",
-    effect: "Relajación profunda y reparación nocturna"
+    name: "Fungi Vital",
+    subtitle: "Vitalidad física natural",
+    description: "Cordyceps, chaga, jengibre y hibiscus para energía celular y defensas antioxidantes.",
+    flavor: "Frutal intenso + especias suaves",
+    benefit: "Anti-fatiga + oxigenación celular."
   },
   {
-    name: "Mood Elevate",
-    ingredients: "Yerba Mate, Cacao, Rhodiola, Mucuna",
-    flavor: "Achocolatado y especiado",
-    effect: "Bienestar emocional y motivación"
+    name: "Calma Cognitiva",
+    subtitle: "Serenidad con claridad",
+    description: "Ashwagandha, reishi, melena de león, tilo y lavanda para relajar sin sedar.",
+    flavor: "Floral-mentolado",
+    benefit: "Sueño profundo + mente clara al despertar."
   }
 ];
 

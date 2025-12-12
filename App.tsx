@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { ArrowRight, Mail, Menu, X, Instagram, Facebook } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowRight, Mail, Menu, X, Instagram, Facebook, MapPin, Phone } from 'lucide-react';
 import { PRODUCTS, BLEND_SPECS, TESTIMONIALS, LOGO_URL } from './constants';
 import SectionWrapper from './components/SectionWrapper';
 
 const App: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showBlendsModal, setShowBlendsModal] = useState(false);
+  const [showCollectionModal, setShowCollectionModal] = useState(false);
+  const [showAboutModal, setShowAboutModal] = useState(false);
   const [email, setEmail] = useState('');
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -17,11 +20,41 @@ const App: React.FC = () => {
     }
   };
 
+  const openBlendsModal = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowBlendsModal(true);
+    setIsMenuOpen(false);
+  };
+
+  const openCollectionModal = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowCollectionModal(true);
+    setIsMenuOpen(false);
+  };
+
+  const openAboutModal = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowAboutModal(true);
+    setIsMenuOpen(false);
+  };
+
+  // Prevent scrolling when modal is open
+  useEffect(() => {
+    if (showBlendsModal || showCollectionModal || showAboutModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showBlendsModal, showCollectionModal, showAboutModal]);
+
   return (
     <div className="min-h-screen bg-yvyna-bg text-stone-900 font-sans selection:bg-stone-800 selection:text-white">
       
       {/* Navigation - Minimalist */}
-      <nav className="fixed w-full top-0 z-50 bg-yvyna-bg/90 backdrop-blur-sm py-4 px-6 flex justify-between items-center">
+      <nav className="fixed w-full top-0 z-50 bg-yvyna-bg/90 backdrop-blur-sm py-4 px-6 flex justify-between items-center border-b border-stone-900/5">
         <div className="w-8">
            {/* Placeholder for spacing */}
         </div>
@@ -33,17 +66,17 @@ const App: React.FC = () => {
         
         {/* Mobile Menu Overlay */}
         {isMenuOpen && (
-           <div className="absolute top-full left-0 w-full bg-[#bdb879] border-t border-stone-300 shadow-lg py-4 flex flex-col items-center gap-4 md:hidden">
-             <a href="#coleccion" onClick={toggleMenu} className="uppercase tracking-widest text-sm hover:text-stone-600 transition-colors">Colección</a>
-             <a href="#blends" onClick={toggleMenu} className="uppercase tracking-widest text-sm hover:text-stone-600 transition-colors">Blends</a>
-             <a href="#nosotros" onClick={toggleMenu} className="uppercase tracking-widest text-sm hover:text-stone-600 transition-colors">Nosotros</a>
+           <div className="absolute top-full left-0 w-full bg-[#bdb879] border-t border-stone-300 shadow-lg py-4 flex flex-col items-center gap-4 md:hidden h-screen">
+             <button onClick={openCollectionModal} className="uppercase tracking-widest text-sm hover:text-stone-600 transition-colors py-2">Colección</button>
+             <button onClick={openBlendsModal} className="uppercase tracking-widest text-sm hover:text-stone-600 transition-colors py-2">Blends</button>
+             <button onClick={openAboutModal} className="uppercase tracking-widest text-sm hover:text-stone-600 transition-colors py-2">Nosotros</button>
            </div>
         )}
 
         <div className="hidden md:flex gap-8">
-             <a href="#coleccion" className="uppercase tracking-widest text-xs font-medium hover:text-stone-600 transition-colors">Colección</a>
-             <a href="#blends" className="uppercase tracking-widest text-xs font-medium hover:text-stone-600 transition-colors">Blends</a>
-             <a href="#nosotros" className="uppercase tracking-widest text-xs font-medium hover:text-stone-600 transition-colors">Nosotros</a>
+             <button onClick={openCollectionModal} className="uppercase tracking-widest text-xs font-medium hover:text-stone-600 transition-colors">Colección</button>
+             <button onClick={openBlendsModal} className="uppercase tracking-widest text-xs font-medium hover:text-stone-600 transition-colors">Blends</button>
+             <button onClick={openAboutModal} className="uppercase tracking-widest text-xs font-medium hover:text-stone-600 transition-colors">Nosotros</button>
         </div>
       </nav>
 
@@ -66,98 +99,12 @@ const App: React.FC = () => {
         </div>
         
         <div className="mt-12 fade-in-up delay-300">
-          <a href="#coleccion" className="group inline-flex items-center gap-2 border-b border-stone-900 pb-1 text-sm tracking-widest uppercase hover:text-stone-600 hover:border-stone-600 transition-all">
-            Descubrir Ritual
+          <button onClick={openCollectionModal} className="group inline-flex items-center gap-2 border-b border-stone-900 pb-1 text-sm tracking-widest uppercase hover:text-stone-600 hover:border-stone-600 transition-all">
+            Ver Colección
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </a>
+          </button>
         </div>
       </header>
-
-      {/* Collection Section */}
-      <SectionWrapper id="coleccion" className="border-t border-stone-900/10">
-        <div className="text-center mb-16">
-          <h3 className="font-serif text-3xl md:text-4xl italic text-stone-800">Nuestra Colección</h3>
-          <div className="h-px w-16 bg-stone-400 mx-auto mt-4"></div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-          {PRODUCTS.map((product, index) => (
-            <div key={index} className="group flex flex-col items-center text-center p-8 border border-stone-900/5 hover:border-stone-900/20 hover:bg-white/10 transition-all duration-500 rounded-sm">
-              <div className="mb-6 p-4 bg-stone-900/5 rounded-full text-stone-800 group-hover:scale-110 transition-transform duration-500">
-                {product.icon}
-              </div>
-              <h4 className="font-serif text-xl md:text-2xl mb-4 text-stone-900">{product.title}</h4>
-              <p className="text-stone-700 leading-relaxed font-light text-sm md:text-base">
-                {product.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </SectionWrapper>
-
-      {/* Blends Technical Sheet */}
-      <SectionWrapper id="blends" className="bg-stone-900/5 rounded-sm my-10">
-        <div className="text-center mb-12">
-          <h3 className="font-serif text-3xl md:text-4xl italic text-stone-800">Ficha Técnica de Blends</h3>
-          <p className="mt-4 text-stone-600 font-light text-sm tracking-wide uppercase">Ciencia y Naturaleza</p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-8">
-          {BLEND_SPECS.map((blend, index) => (
-            <div key={index} className="flex flex-col md:flex-row gap-4 pb-6 border-b border-stone-900/10 last:border-0 lg:last:border-b">
-               <div className="md:w-1/3">
-                 <h4 className="font-serif text-xl font-medium text-stone-900">{blend.name}</h4>
-                 <span className="text-xs font-bold uppercase tracking-wider text-stone-500 mt-1 block">Funcionalidad</span>
-               </div>
-               <div className="md:w-2/3 space-y-2">
-                 <div className="flex flex-col sm:flex-row sm:gap-2">
-                    <span className="font-medium text-sm text-stone-800">Ingredientes:</span>
-                    <span className="font-light text-sm text-stone-700 italic">{blend.ingredients}</span>
-                 </div>
-                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <div>
-                      <span className="font-medium text-sm text-stone-800 block">Perfil:</span>
-                      <span className="font-light text-sm text-stone-700">{blend.flavor}</span>
-                    </div>
-                    <div>
-                      <span className="font-medium text-sm text-stone-800 block">Efecto:</span>
-                      <span className="font-light text-sm text-stone-700">{blend.effect}</span>
-                    </div>
-                 </div>
-               </div>
-            </div>
-          ))}
-        </div>
-      </SectionWrapper>
-
-      {/* About Us */}
-      <SectionWrapper id="nosotros">
-        <div className="flex flex-col md:flex-row items-center gap-12">
-          <div className="md:w-1/2 relative">
-             {/* Abstract image representation */}
-             <div className="aspect-[4/5] w-full bg-stone-800 overflow-hidden relative rounded-sm">
-                <img 
-                  src="https://picsum.photos/600/800?grayscale&blur=2" 
-                  alt="YVYNA Ritual" 
-                  className="w-full h-full object-cover opacity-60 mix-blend-overlay hover:scale-105 transition-transform duration-1000"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-serif text-white/20 text-9xl italic">Y</span>
-                </div>
-             </div>
-          </div>
-          <div className="md:w-1/2 text-left space-y-6">
-            <h3 className="font-serif text-4xl italic text-stone-900">Sobre Nosotros</h3>
-            <div className="h-px w-12 bg-stone-900"></div>
-            <p className="text-lg leading-loose font-light text-stone-800">
-              YVYNA nace con el propósito de reconectar el ritual del mate con la ciencia del bienestar moderno.
-            </p>
-            <p className="text-base leading-relaxed font-light text-stone-700">
-              Combinamos yerba mate con activos funcionales para cuerpo y mente: Cañamo, adaptógenos, nootrópicos y botánicos. Creemos en una energía limpia, sostenible y consciente.
-            </p>
-          </div>
-        </div>
-      </SectionWrapper>
 
       {/* Testimonials */}
       <SectionWrapper className="bg-white/30 rounded-sm">
@@ -216,6 +163,186 @@ const App: React.FC = () => {
           © {new Date().getFullYear()} YVYNA. Todos los derechos reservados.
         </p>
       </footer>
+
+      {/* Blends Modal */}
+      {showBlendsModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-stone-900/80 backdrop-blur-sm" 
+            onClick={() => setShowBlendsModal(false)}
+          ></div>
+          <div className="relative w-full max-w-5xl h-[90vh] bg-[#f0ece2] rounded-sm shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-300">
+            {/* Modal Header */}
+            <div className="p-6 md:p-8 flex justify-between items-start border-b border-stone-200 bg-[#e8e4da]">
+              <div>
+                <h3 className="font-serif text-3xl md:text-4xl italic text-stone-900">Ficha Técnica de Blends</h3>
+                <p className="mt-2 text-stone-600 font-light text-sm tracking-wide uppercase">Ciencia y Naturaleza</p>
+              </div>
+              <button 
+                onClick={() => setShowBlendsModal(false)}
+                className="p-2 hover:bg-stone-300/50 rounded-full transition-colors text-stone-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            {/* Modal Content - Scrollable */}
+            <div className="overflow-y-auto p-6 md:p-8 flex-1">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-12">
+                {BLEND_SPECS.map((blend, index) => (
+                  <div key={index} className="flex flex-col gap-4 pb-8 border-b border-stone-300 last:border-0 lg:last:border-b-0 lg:border-b-0 lg:pb-0">
+                    <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4 border-b border-stone-200 pb-2 mb-2">
+                       <h4 className="font-serif text-2xl font-medium text-stone-900">{blend.name}</h4>
+                       <span className="text-xs font-bold uppercase tracking-widest text-[#8c8855]">{blend.subtitle}</span>
+                    </div>
+                    
+                    <div className="space-y-4">
+                       <p className="font-light text-stone-700 leading-relaxed italic">
+                         "{blend.description}"
+                       </p>
+                       
+                       <div className="bg-white/50 p-4 rounded-sm border border-stone-100">
+                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <span className="font-bold text-[10px] text-stone-500 uppercase tracking-widest block mb-1">Notas de Sabor</span>
+                              <span className="font-medium text-sm text-stone-800">{blend.flavor}</span>
+                            </div>
+                            <div>
+                              <span className="font-bold text-[10px] text-stone-500 uppercase tracking-widest block mb-1">Beneficio Principal</span>
+                              <span className="font-medium text-sm text-stone-800">{blend.benefit}</span>
+                            </div>
+                         </div>
+                       </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Collection Modal */}
+      {showCollectionModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-stone-900/80 backdrop-blur-sm" 
+            onClick={() => setShowCollectionModal(false)}
+          ></div>
+          <div className="relative w-full max-w-5xl h-auto max-h-[90vh] bg-[#f0ece2] rounded-sm shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-300">
+            {/* Modal Header */}
+            <div className="p-6 md:p-8 flex justify-between items-start border-b border-stone-200 bg-[#e8e4da]">
+              <div>
+                <h3 className="font-serif text-3xl md:text-4xl italic text-stone-900">Nuestra Colección</h3>
+                <p className="mt-2 text-stone-600 font-light text-sm tracking-wide uppercase">Productos Esenciales</p>
+              </div>
+              <button 
+                onClick={() => setShowCollectionModal(false)}
+                className="p-2 hover:bg-stone-300/50 rounded-full transition-colors text-stone-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            {/* Modal Content - Scrollable */}
+            <div className="overflow-y-auto p-6 md:p-12 flex-1">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                {PRODUCTS.map((product, index) => (
+                  <div key={index} className="group flex flex-col items-center text-center p-8 border border-stone-300 bg-white/40 hover:bg-white/80 transition-all duration-500 rounded-sm shadow-sm hover:shadow-md">
+                    <div className="mb-6 p-4 bg-stone-900/5 rounded-full text-stone-800 group-hover:scale-110 transition-transform duration-500">
+                      {product.icon}
+                    </div>
+                    <h4 className="font-serif text-xl md:text-2xl mb-4 text-stone-900">{product.title}</h4>
+                    <p className="text-stone-700 leading-relaxed font-light text-sm">
+                      {product.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* About Us & Contact Modal */}
+      {showAboutModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-stone-900/80 backdrop-blur-sm" 
+            onClick={() => setShowAboutModal(false)}
+          ></div>
+          <div className="relative w-full max-w-4xl h-auto max-h-[90vh] bg-[#f0ece2] rounded-sm shadow-2xl overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-300">
+            {/* Modal Header */}
+            <div className="p-6 md:p-8 flex justify-between items-start border-b border-stone-200 bg-[#e8e4da]">
+              <div>
+                <h3 className="font-serif text-3xl md:text-4xl italic text-stone-900">Sobre Nosotros</h3>
+                <p className="mt-2 text-stone-600 font-light text-sm tracking-wide uppercase">Contacto & Filosofía</p>
+              </div>
+              <button 
+                onClick={() => setShowAboutModal(false)}
+                className="p-2 hover:bg-stone-300/50 rounded-full transition-colors text-stone-600"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            {/* Modal Content - Scrollable */}
+            <div className="overflow-y-auto p-6 md:p-12 flex-1">
+               <div className="flex flex-col md:flex-row gap-12">
+                  {/* Left Column: Story */}
+                  <div className="md:w-3/5 space-y-6">
+                    <h4 className="font-serif text-2xl text-stone-800 border-b border-stone-300 pb-2">Nuestra Esencia</h4>
+                    <p className="text-lg leading-loose font-light text-stone-800">
+                      YVYNA nace con el propósito de reconectar el ritual del mate con la ciencia del bienestar moderno.
+                    </p>
+                    <p className="text-base leading-relaxed font-light text-stone-700">
+                      Combinamos yerba mate con activos funcionales para cuerpo y mente: Cañamo, adaptógenos, nootrópicos y botánicos. Creemos en una energía limpia, sostenible y consciente. Buscamos transformar la rutina diaria en un momento de conexión personal y salud holística.
+                    </p>
+                  </div>
+
+                  {/* Right Column: Contact Info */}
+                  <div className="md:w-2/5 space-y-8">
+                     <div className="bg-white/50 p-6 rounded-sm border border-stone-200 shadow-sm">
+                        <h4 className="font-serif text-xl text-stone-800 mb-6">Información de Contacto</h4>
+                        
+                        <ul className="space-y-4">
+                          <li className="flex items-start gap-3">
+                             <MapPin className="w-5 h-5 text-[#8c8855] mt-1 shrink-0" />
+                             <div>
+                               <span className="block font-medium text-xs uppercase tracking-wider text-stone-500 mb-1">Dirección</span>
+                               <span className="text-stone-800 font-light">Av. del Libertador 1000,<br/>Buenos Aires, Argentina</span>
+                             </div>
+                          </li>
+                          
+                          <li className="flex items-start gap-3">
+                             <Phone className="w-5 h-5 text-[#8c8855] mt-1 shrink-0" />
+                             <div>
+                               <span className="block font-medium text-xs uppercase tracking-wider text-stone-500 mb-1">Teléfono</span>
+                               <span className="text-stone-800 font-light">+54 9 11 5555-0000</span>
+                             </div>
+                          </li>
+
+                          <li className="flex items-start gap-3">
+                             <Mail className="w-5 h-5 text-[#8c8855] mt-1 shrink-0" />
+                             <div>
+                               <span className="block font-medium text-xs uppercase tracking-wider text-stone-500 mb-1">Email</span>
+                               <span className="text-stone-800 font-light">contacto@yvyna.com</span>
+                             </div>
+                          </li>
+                        </ul>
+
+                        <div className="mt-8 pt-6 border-t border-stone-200 flex justify-center gap-6">
+                           <a href="#" className="text-stone-600 hover:text-[#8c8855] transition-colors"><Instagram className="w-5 h-5" /></a>
+                           <a href="#" className="text-stone-600 hover:text-[#8c8855] transition-colors"><Facebook className="w-5 h-5" /></a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
